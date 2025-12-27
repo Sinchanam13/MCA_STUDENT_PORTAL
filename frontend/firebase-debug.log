@@ -1,0 +1,23 @@
+[debug] [2025-12-15T16:15:20.897Z] ----------------------------------------------------------------------
+[debug] [2025-12-15T16:15:20.900Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\prajw\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2025-12-15T16:15:20.900Z] CLI Version:   15.0.0
+[debug] [2025-12-15T16:15:20.901Z] Platform:      win32
+[debug] [2025-12-15T16:15:20.901Z] Node Version:  v24.11.0
+[debug] [2025-12-15T16:15:20.901Z] Time:          Mon Dec 15 2025 21:45:20 GMT+0530 (India Standard Time)
+[debug] [2025-12-15T16:15:20.901Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-12-15T16:15:20.904Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  D:\mcaproject\frontend
+
+[debug] [2025-12-15T16:15:54.002Z] *** [apiv2] error from fetch(https://firebase-public.firebaseio.com/cli.json, {"headers":{},"method":"GET"}): FetchError: request to https://firebase-public.firebaseio.com/cli.json failed, reason: 
+[warn] !  Unable to fetch the CLI MOTD and remote config. This is not a fatal error, but may indicate an issue with your network connection. 
+[debug] [2025-12-15T16:15:54.002Z] Failed to fetch MOTD FirebaseError: Failed to make request to https://firebase-public.firebaseio.com/cli.json

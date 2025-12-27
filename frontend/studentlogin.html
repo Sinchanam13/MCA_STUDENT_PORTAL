@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Student Login Page</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="font-display">
+    <div
+        class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <header class="flex items-center justify-start p-6 absolute top-0 left-0 w-full">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-3xl">school</span>
+                    <span class="text-lg font-bold text-[#0d141b] dark:text-white">University Portal</span>
+                </div>
+            </header>
+
+            <main class="flex flex-1 w-full">
+                <div class="flex flex-col md:flex-row w-full min-h-screen">
+
+                    <!-- LEFT IMAGE -->
+                    <div class="w-full md:w-1/2 flex-1 relative hidden md:block">
+                        <div class="absolute inset-0 bg-center bg-no-repeat bg-cover"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBJvRropuWzKgq4_xM0HFp-Et49GNgJJxrKPlC-xYwwFIg1YydOv7gS2dm3w2iwJC82SmBtAw6Goi1wp8_E5LrlwRY-pB4jIU6LSE60XWzp1Zb0oB4PvXAl9bXvKvt0rxVHe6OcRHnPabrr4IbHpzfx-3j3ADl7kwQhvr5Li-HaOKvhesB_rgISE7qrAyPSWil4uhjZY8CJvdMlPvuBqH9cPXorxGJG8sjYNAlLT3oV2Fj1Z3_NYYbgPQtj1E9BonkrJLkxlsGy09jM");'>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT LOGIN -->
+                    <div
+                        class="w-full md:w-1/2 flex flex-1 items-center justify-center p-8 bg-background-light dark:bg-background-dark">
+                        <div class="flex flex-col max-w-md w-full gap-8">
+
+                            <div class="flex flex-col gap-3">
+                                <p
+                                    class="text-[#0d141b] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">
+                                    Welcome Back, Student
+                                </p>
+                                <p class="text-[#4c739a] dark:text-slate-400 text-base">
+                                    Sign in with your USN or Google account to access your notes, projects, and
+                                    research.
+                                </p>
+                            </div>
+
+                            <div class="flex flex-col gap-4">
+                                <label class="flex flex-col w-full">
+                                    <p class="text-[#0d141b] dark:text-slate-300 pb-2 font-medium">
+                                        Enter USN
+                                    </p>
+                                    <input id="usnInput"
+                                        class="form-input w-full h-14 rounded-lg border border-[#cfdbe7] dark:border-slate-700 bg-background-light dark:bg-background-dark p-[15px] text-base dark:text-white"
+                                        placeholder="Ex: 1RN25MC089" type="text" />
+                                </label>
+                            </div>
+
+                            <div class="flex flex-col gap-4">
+                                <button id="submitUSN"
+                                    class="flex items-center justify-center bg-primary text-white h-14 rounded-lg hover:bg-primary/90">
+                                    Submit USN
+                                </button>
+
+                                <button onclick="loginWithGoogle()"
+                                    class="flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-700 h-14 rounded-lg dark:text-white hover:bg-slate-300 dark:hover:bg-slate-600">
+                                    Sign in with Google
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- FIREBASE + LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXwj3oHDypUhiyoaJwVxpv5bSdcEcJXKI",
+            authDomain: "department-d3659.firebaseapp.com",
+            projectId: "department-d3659",
+            storageBucket: "department-d3659.appspot.com",
+            messagingSenderId: "722426252948",
+            appId: "1:722426252948:web:930f2b23ec8b310502ae81"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // ================= USN VALIDATION =================
+        const USN_REGEX = /^[1-9][A-Z]{2}(\d{2})[A-Z]{2}(\d{3})$/i;
+
+        document.getElementById("submitUSN").addEventListener("click", () => {
+            const usn = document.getElementById("usnInput").value.trim().toUpperCase();
+            const match = usn.match(USN_REGEX);
+
+            if (!match) {
+                alert("Invalid USN format");
+                return;
+            }
+
+            const usnYear = parseInt(match[1], 10);
+            const now = new Date();
+
+            const currentYear = now.getFullYear() % 100;
+            const currentMonth = now.getMonth(); // 0–11
+
+            const allowedYear =
+                currentMonth === 11 ? currentYear : currentYear - 1;
+
+            if (usnYear > allowedYear) {
+                alert("USN batch year not yet valid");
+                return;
+            }
+
+            // ✅ IMPORTANT FIX
+            sessionStorage.setItem("userType", "student");
+            sessionStorage.setItem("usn", usn);
+
+            window.location.href = "home.html";
+        });
+
+        // ================= GOOGLE LOGIN =================
+        window.loginWithGoogle = function () {
+            const provider = new GoogleAuthProvider();
+            provider.setCustomParameters({ hd: "rnsit.ac.in" });
+
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    if (!result.user.email.endsWith("@rnsit.ac.in")) {
+                        alert("Only college emails allowed");
+                        signOut(auth);
+                        return;
+                    }
+
+                    // ✅ IMPORTANT FIX
+                    sessionStorage.setItem("userType", "student");
+                    sessionStorage.setItem("studentEmail", result.user.email);
+
+                    window.location.href = "home.html";
+                })
+                .catch((err) => alert(err.message));
+        };
+    </script>
+
+</body>
+
+</html>
