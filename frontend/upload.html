@@ -27,7 +27,7 @@
             const formData = new FormData(form);
 
             try {
-                const res = await fetch("http://localhost:5000/api/research/upload", {
+                const res = await fetch("http://localhost:5000/api/notes/upload", {
                     method: "POST",
                     body: formData
                 });

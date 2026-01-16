@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const cloudinary = require("../cloudinaryConfig");
+const cloudinary = require("../config/cloudinaryConfig");
 const Research = require("../models/Research");
 
 const storage = multer.memoryStorage();
@@ -9,6 +9,9 @@ const upload = multer({ storage });
 
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
+        console.log("FILE:", req.file);
+        console.log("CLOUDINARY:", process.env.CLOUDINARY_CLOUD_NAME);
+
         if (!req.file) {
             return res.status(400).json({ message: "No file uploaded" });
         }
@@ -17,7 +20,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
         const result = await cloudinary.uploader.upload(fileBase64, {
             folder: "research",
-            resource_type: "raw",
+            resource_type: "auto",
         });
 
         const research = new Research({
@@ -30,13 +33,13 @@ router.post("/upload", upload.single("file"), async (req, res) => {
         await research.save();
 
         res.status(201).json({
-            message: "Research paper uploaded successfully",
+            message: "Research uploaded successfully",
             research,
         });
 
-    } catch (error) {
-        console.error("Research upload error:", error);
-        res.status(500).json({ error: error.message });
+    } catch (err) {
+        console.error("RESEARCH UPLOAD ERROR:", err);
+        res.status(500).json({ error: err.message });
     }
 });
 
