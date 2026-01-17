@@ -6,15 +6,20 @@ const connectDB = require("./config/db");
 dotenv.config();
 connectDB();
 
-const app = express();
+const app = express(); // ✅ THIS LINE WAS MISSING
+
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("Backend running 🚀"));
+app.get("/", (req, res) => {
+    res.send("Backend running 🚀");
+});
 
 app.use("/api/notes", require("./routes/notes"));
 app.use("/api/projects", require("./routes/projects"));
 app.use("/api/research", require("./routes/research"));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
