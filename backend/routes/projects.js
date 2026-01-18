@@ -3,50 +3,92 @@ const router = express.Router();
 const multer = require("multer");
 const cloudinary = require("../config/cloudinaryConfig");
 const Project = require("../models/Project");
-const streamifier = require("streamifier");
+const axios = require("axios");
 
-// Multer in-memory storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// POST /projects/upload
+
+// ================= UPLOAD PROJECT =================
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: "No file uploaded" });
         }
 
-        // Function to upload via stream
-        const uploadToCloudinary = (buffer) => {
+        const streamUpload = () => {
             return new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream(
-                    { folder: "projects", resource_type: "raw" },
+                    {
+                        folder: "projects",
+                        resource_type: "raw",
+
+                    },
                     (error, result) => {
-                        if (error) return reject(error);
-                        resolve(result);
+                        if (result) resolve(result);
+                        else reject(error);
                     }
                 );
-                streamifier.createReadStream(buffer).pipe(stream);
+                stream.end(req.file.buffer);
             });
         };
 
-        // Upload file
-        const result = await uploadToCloudinary(req.file.buffer);
+        const result = await streamUpload();
 
-        // Create new project in MongoDB
         const project = new Project({
-            title: req.body.title,
-            description: req.body.description,
-            fileUrl: result.secure_url,     // ✅ required for validation
-            cloudinaryId: result.public_id, // ✅ required for validation
+            title: req.body.title || req.file.originalname,
+            description: req.body.description || "",
+            fileUrl: result.secure_url,      // ✅ schema match
+            cloudinaryId: result.public_id   // ✅ schema match
         });
 
         await project.save();
-        res.status(201).json({ message: "Project uploaded successfully", project });
+
+        res.status(201).json({
+            message: "Project uploaded successfully",
+            project
+        });
+
+    } catch (error) {
+        console.error("Project upload error:", error);
+        res.status(500).json({ message: "Upload failed", error });
+    }
+});
+
+
+// ================= GET ALL PROJECTS =================
+router.get("/all", async (req, res) => {
+    try {
+        const projects = await Project.find().sort({ createdAt: -1 });
+        res.status(200).json({ projects });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch projects" });
+    }
+});
+
+
+// ================= DOWNLOAD PROJECT =================
+router.get("/download/:id", async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id);
+        if (!project) return res.status(404).send("Project not found");
+
+        const response = await axios({
+            url: project.fileUrl,
+            method: "GET",
+            responseType: "stream"
+        });
+
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="${project.title}.pdf"`
+        );
+
+        response.data.pipe(res);
 
     } catch (err) {
-        console.error("Project upload error:", err);
-        res.status(500).json({ error: err.message });
+        console.error("Download error:", err);
+        res.status(500).send("Server Error");
     }
 });
 
