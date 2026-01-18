@@ -5,16 +5,20 @@ const cloudinary = require("../config/cloudinaryConfig");
 const Note = require("../models/Note");
 const axios = require("axios");
 
+// multer setup
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // ================= UPLOAD NOTE =================
 router.post("/upload", upload.single("file"), async (req, res) => {
     try {
-        if (!req.file) {
-            return res.status(400).json({ message: "No file uploaded" });
-        }
+        if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
+        const { title, semester, subject } = req.body;
+        if (!semester || !subject)
+            return res.status(400).json({ message: "Semester and Subject are required" });
+
+        // Upload PDF to Cloudinary
         const streamUpload = () => {
             return new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream(
@@ -34,11 +38,14 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 
         const result = await streamUpload();
 
+        // Save note with semester & subject
         const note = new Note({
-            title: req.body.title || req.file.originalname,
+            title: title || req.file.originalname,
             fileName: req.file.originalname,
             public_id: result.public_id,
-            url: result.secure_url
+            url: result.secure_url,
+            semester,
+            subject
         });
 
         await note.save();
@@ -55,9 +62,15 @@ router.post("/upload", upload.single("file"), async (req, res) => {
 });
 
 // ================= GET ALL NOTES =================
+// Optional query filtering by semester & subject
 router.get("/all", async (req, res) => {
     try {
-        const notes = await Note.find().sort({ createdAt: -1 });
+        const { semester, subject } = req.query;
+        const filter = {};
+        if (semester) filter.semester = semester;
+        if (subject) filter.subject = subject;
+
+        const notes = await Note.find(filter).sort({ createdAt: -1 });
         res.status(200).json(notes);
     } catch (error) {
         res.status(500).json({ message: "Failed to fetch notes", error });
