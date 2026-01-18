@@ -9,9 +9,43 @@
 </head>
 
 <body class="bg-gray-100 font-sans p-6">
+    <header
+        class="sticky top-0 z-10 flex w-full items-center justify-center border-b border-slate-200/80 bg-background-light/80 backdrop-blur-sm dark:border-slate-800/80 dark:bg-background-dark/80">
+        <div class="flex w-full max-w-7xl items-center justify-between whitespace-nowrap px-4 py-3 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-8">
+                <div class="flex items-center gap-3 text-slate-900 dark:text-slate-50">
+
+                    <!-- Logo image -->
+                    <img src="logo.webp" alt="MCA Department Logo" class="h-14 w-auto object-contain">
+
+                    <!-- Department name -->
+                    <h2 class="text-lg font-bold tracking-[-0.015em]">
+                        MCA Department
+                    </h2>
+
+                </div>
+            </div>
+
+            <nav class="hidden items-center gap-9 md:flex">
+                <a class="text-sm font-medium text-primary" href="home.html">Dashboard</a>
+                <a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary"
+                    href="research.html">Research Paper</a>
+                <a class="text-sm font-medium text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary"
+                    href="project.html">Project</a>
+            </nav>
+        </div>
+        <div class="flex flex-1 items-center justify-end gap-4">
+
+            <div class="h-10 w-10 shrink-0">
+                <img class="h-full w-full rounded-full object-cover" data-alt="Student profile picture"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHrISuoZvl1hIAC2Xzxz-ZgYwc5cMyzKwvWUG_5DWGOmhPoMSOXTIeisRv1r9NCrZibfVn6RZMDjgvWxFvkd62I4U8z5mkKIL1xfA-GUivQrIx6PG-vKi2OUObXT4-Gg7eKXrkdZQy_N9m55PYvEzx0UR5qtR5mCjlhXKRtPNdu_ebH2ald5YrX_HuYKfWmihmAC43xmwc70YgBsDLDMJgNsQ9kf9kl65Mtp6oJcvVTU1tbLM5NBb0QCvFihPkVNHHmTY_PyUvlaw1" />
+            </div>
+        </div>
+        </div>
+    </header>
 
     <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-4 text-center">Upload Notes / Research Paper</h2>
+        <h2 class="text-2xl font-bold mb-4 text-center">Upload Notes</h2>
 
         <form id="uploadForm" class="space-y-4">
 
