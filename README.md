@@ -1,173 +1,168 @@
-# Academic Resource Management System
+# MCA Student Portal
 
-A full-stack web application that provides a centralized platform for managing academic resources such as lecture notes, student projects, and research papers. The system offers separate portals for lecturers and students with secure authentication and role-based access.
+A web-based portal designed for the MCA department to manage and share academic resources between students and lecturers.
 
----
+## 🌐 Live Demo
 
-## Features
+- **Frontend:** https://department-d3659.web.app
+- **Backend:** https://mca-student-portal.onrender.com
 
-### Authentication
+## 📌 About the Project
 
-* Secure login using Firebase Authentication
-* Email & Password authentication
-* Google Sign-In with institutional email accounts
-* Separate login portals for Lecturers and Students
+The MCA Student Portal provides a centralized platform for students and lecturers to access and manage departmental academic resources. It helps organize notes, projects, and research materials in one place.
 
-### Lecturer Module
+The application uses Firebase Authentication for user authentication, a Node.js and Express backend for API operations, MongoDB Atlas for database storage, and Cloudinary for file uploads.
 
-* Upload lecture notes
-* Add subject details, subject code, semester, description, and lecturer name
-* Upload project resources
-* Review available projects
-* Upload research papers
-* View and download shared academic resources
+## ✨ Features
 
-### Student Module
+### Student Features
+- Student login and authentication.
+- View and download academic notes.
+- Access project resources.
+- Browse research materials.
 
-* Secure student login
-* Browse lecture notes
-* Filter notes by semester, subject, and lecturer
-* Download lecture notes
-* Upload projects
-* Upload research papers
-* View and download shared resources
+### Lecturer Features
+- Lecturer login and authentication.
+- Upload academic notes.
+- Upload project resources.
+- Upload research materials.
 
-### File Management
+### General Features
+- Separate student and lecturer interfaces.
+- Centralized academic resource management.
+- File upload and download functionality.
+- Cloud-based database and file storage.
+- Deployed frontend and backend.
 
-* Upload PDF and other academic documents
-* Cloud-based file storage using Cloudinary
-* Easy download functionality
+## 🛠️ Tech Stack
 
----
+| Technology | Purpose |
+|---|---|
+| HTML | Page structure |
+| CSS | Styling and layout |
+| JavaScript | Frontend functionality |
+| Node.js | Backend runtime |
+| Express.js | REST API and server |
+| MongoDB Atlas | Database |
+| Firebase Authentication | User authentication |
+| Firebase Hosting | Frontend deployment |
+| Render | Backend deployment |
+| Cloudinary | File storage |
 
-## Tech Stack
-
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript
-
-### Backend
-
-* Node.js
-* Express.js
-
-### Database
-
-* MongoDB
-
-### Authentication
-
-* Firebase Authentication
-
-### File Storage
-
-* Cloudinary
-
----
-
-## Project Structure
+## 🏗️ Project Structure
 
 ```text
-mcaproject/
-│
+MCA_STUDENT_PORTAL/
+├── backend/
+│   ├── routes/
+│   │   ├── notes.js
+│   │   ├── projects.js
+│   │   └── research.js
+│   ├── package.json
+│   └── server.js
 ├── frontend/
-│   ├── 404.html
-│   ├── demo.html
+│   ├── index.html
+│   ├── welcome.html
 │   ├── home.html
+│   ├── studentlogin.html
 │   ├── lecturerlogin.html
+│   ├── studentnotes.html
 │   ├── lecturernotes.html
 │   ├── notes.html
-│   ├── notesupload.html
-│   ├── project.html
-│   ├── research.html
-│   ├── researchupload.html
-│   ├── studentlogin.html
-│   ├── studentnotes.html
 │   ├── upload.html
+│   ├── project.html
 │   ├── uploadproject.html
-│   ├── welcome.html
-│   └── Assets (Images)
-│
-└── backend/
-    ├── config/
-    ├── models/
-    ├── routes/
-    ├── server.js
-    ├── package.json
-    ├── package-lock.json
-    └── .env
+│   ├── research.html
+│   └── researchupload.html
+├── firebase.json
+├── .firebaserc
+├── .gitignore
+└── README.md
 ```
 
----
+## ⚙️ Run the Project Locally
 
-## Installation
+### Prerequisites
 
-### Clone the repository
+- Node.js and npm
+- A MongoDB Atlas account
+- Firebase project and Authentication configuration
+- Cloudinary account
+
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/<your-username>/<repository-name>.git
+git clone https://github.com/Sinchanam13/MCA_STUDENT_PORTAL.git
+cd MCA_STUDENT_PORTAL
 ```
 
-### Navigate to the backend
+### 2. Configure the backend
 
 ```bash
 cd backend
-```
-
-### Install dependencies
-
-```bash
 npm install
 ```
 
-### Configure Environment Variables
+Create a `.env` file in the backend directory and configure the environment variables required by your application, including your MongoDB connection string and any Firebase or Cloudinary credentials used by the backend.
 
-Create a `.env` file inside the **backend** directory and add your credentials.
+Use the exact variable names expected by your backend source code. Never commit real credentials or secret keys to GitHub.
 
-Example:
-
-```env
-PORT=5000
-
-MONGODB_URI=your_mongodb_connection_string
-
-FIREBASE_API_KEY=your_firebase_api_key
-
-CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-
-CLOUDINARY_API_KEY=your_cloudinary_api_key
-
-CLOUDINARY_API_SECRET=your_cloudinary_api_secret
-```
-
-### Start the server
+### 3. Start the backend
 
 ```bash
-node server.js
+npm start
 ```
 
-Open the frontend by launching the HTML files in your browser or using a local server.
+The backend runs on the port configured by the application. For local development, verify the configured port and environment variables before testing.
 
----
+### 4. Run the frontend
 
-## Future Enhancements
+Open `frontend/welcome.html` in your browser, or serve the frontend through a local web server.
 
-* Admin dashboard
-* Advanced search functionality
-* Resource approval workflow
-* Notifications for new uploads
-* Comments and feedback on projects
-* Bookmark and favorites
-* Responsive mobile interface
-* Analytics dashboard
+To use the local backend, configure the frontend API URLs for your local development environment. For the deployed website, the frontend uses the Render backend URL.
 
----
+## 🚀 Deployment
 
-## Author
+### Frontend — Firebase Hosting
+
+The frontend is deployed using Firebase Hosting.
+
+Live URL: https://department-d3659.web.app
+
+To deploy frontend updates:
+
+```bash
+firebase deploy --only hosting
+```
+
+### Backend — Render
+
+The backend is deployed on Render.
+
+Live URL: https://mca-student-portal.onrender.com
+
+The backend requires the appropriate environment variables to connect to MongoDB Atlas and any external services it uses.
+
+## 🔐 Security Notes
+
+- Keep `.env` files and private credentials out of version control.
+- Configure Firebase Authentication rules and authorized users appropriately.
+- Restrict database and file-storage access according to the application's requirements.
+- Validate uploaded files and enforce appropriate access controls.
+- Configure CORS for the intended frontend origins in production.
+
+## 🎯 Project Objective
+
+The objective of this project is to simplify academic resource sharing within the MCA department through a centralized web application with separate student and lecturer interfaces.
+
+## 👩‍💻 Author
 
 **Sinchana M**
 
-MCA Student | Full Stack Developer
+MCA Student | RNS Institute of Technology, Bengaluru
 
+GitHub: https://github.com/Sinchanam13
+
+---
+
+*This project was developed to improve access to academic resources and make departmental resource management more convenient.*
